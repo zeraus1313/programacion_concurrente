@@ -2,26 +2,26 @@ import java.util.Random;
 
 public class App {
     public static void main(String[] args) throws InterruptedException {
-        Data[] arreglo = new Data[1000]; // Arreglo de objetos 
+        int[] arreglo = new int[1000]; //Nuevo arreglo
         for (int i = 0; i < arreglo.length; i++) {
-            arreglo[i] = new Data(i * 2); // Arreglo ordenado de a pares
+            arreglo[i] = i * 2; // Arreglo ordenado
         }
-        Random random = new Random();
-        int objetivo = 1;
-        while (objetivo %2 !=0){
-            objetivo = random.nextInt(1999); // Pido unicamente numeros existentes
+        Random random = new Random(); //objetivo random
+        int objetivo = random.nextInt(1999);
+        while (objetivo %2 != 0){ //Pido numeros existentes en el vector
+            objetivo = random.nextInt(1999);
         }
-        long inicio = System.nanoTime(); // Mido el tiempo de ejecucion 
+        long inicio = System.nanoTime(); //mido el tiempo con System.nanoTime
         int posicion = Secuencial.binarySearch(arreglo, objetivo);
         long fin = System.nanoTime();
-        long duracion = fin - inicio;
+        long duracion = fin - inicio; //Calculo el tiempo para cada algoritmo
         System.out.println("Busqueda Binaria Formato Secuencial: ");
          if (posicion != -1) {
-            System.out.println("Elemento encontrado ( " + objetivo + " ) en la posicion: " + posicion + "con un tiempo de: " + duracion + "ns");
+            System.out.println("Elemento encontrado ( " + objetivo + " )  en la posicion: " + posicion + "con un tiempo de: " + duracion + "ns");
         } else {
             System.out.println("Elemento no encontrado." + objetivo);
         }
-        
+
         inicio = System.nanoTime();
         posicion = parallelBinarySearch(arreglo, objetivo, 2);
         fin = System.nanoTime();
@@ -33,12 +33,10 @@ public class App {
             System.out.println("Elemento no encontrado." + objetivo);
         }
         
-        
-        
     }
 
     // Método principal para ejecutar la búsqueda binaria en paralelo
-    public static int parallelBinarySearch(Data[] arr, int target, int numThreads) throws InterruptedException {
+    public static int parallelBinarySearch(int[] arr, int target, int numThreads) throws InterruptedException {
         
         int length = arr.length; // Tamaño total del arreglo
         SearchThread[] threads = new SearchThread[numThreads]; // Arreglo de hilos
